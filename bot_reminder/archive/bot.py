@@ -10,14 +10,14 @@ from handlers.command_handler import CommandHandler
 from services.scheduler_service import SchedulerService
 
 
-# Стало (новая версия):
-def send_message(vk, user_id: int, text: str) -> bool:
+def send_message(user_id: int, text: str) -> bool:
+    """Отправить сообщение пользователю (callback для планировщика)"""
     try:
-        vk.messages.send(
-            user_id=user_id,
-            message=text,
-            random_id=0
-        )
+        vk.method("messages.send", {
+            "user_id": user_id,
+            "message": text,
+            "random_id": 0
+        })
         return True
     except Exception as e:
         print(f"Ошибка отправки сообщения {user_id}: {e}")
@@ -36,7 +36,7 @@ def main():
     command_handler = CommandHandler(vk)
     
     # Запуск планировщика
-    scheduler = SchedulerService(vk, send_message)
+    scheduler = SchedulerService(send_message)
     scheduler.start()
     
     # Основной цикл получения событий
@@ -62,17 +62,11 @@ def main():
                 
                 # Отправка ответа
                 if response:
-                    print(f"🔍 ОТВЕТ БУДЕТ ОТПРАВЛЕН: {response[:50]}")  # <-- ДОБАВЬТЕ ЭТУ СТРОКУ
-                    try:
-                        result=vk.messages.send(
-                            user_id=user_id,
-                            message=response,
-                            random_id=0
-                        )
-                        print(f"✅ ОТПРАВЛЕНО! Результат: {result}")
-                    except Exception as e:
-                        print(f"❌ ОШИБКА ОТПРАВКИ: {e}")
-                
+                    vk.method("messages.send", {
+                        "user_id": user_id,
+                        "message": response,
+                        "random_id": 0
+                    })
     
     except KeyboardInterrupt:
         print("\n🛑 Остановка бота...")

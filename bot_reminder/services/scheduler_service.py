@@ -11,10 +11,11 @@ from config import config
 class SchedulerService:
     """Сервис для фоновой отправки напоминаний"""
     
-    def __init__(self, send_callback: Callable):
+    def __init__(self, vk, send_callback: Callable):
         """
         send_callback: функция, которая отправляет сообщение пользователю
         """
+        self.vk = vk
         self.send_callback = send_callback
         self.running = False
         self.thread = None
@@ -45,7 +46,7 @@ class SchedulerService:
                 
                 for reminder in due_reminders:
                     # Отправляем напоминание
-                    success = self.send_callback(
+                    success = self.send_callback(self.vk,
                         user_id=reminder.user_id,
                         text=f"🔔 Напоминание: {reminder.text}"
                     )
