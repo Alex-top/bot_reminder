@@ -1,0 +1,22 @@
+cd "C:\Users\Хабирев АЕ\Desktop\Python Developer\vkontakte"
+
+# 1. Удалить старый .git из vkontakte
+rm -rf .git
+
+# 2. Перейти в bot_reminder и создать новый .git там
+cd bot_reminder
+git init
+
+# 3. Добавить все файлы
+git add .
+git commit -m "Initial commit with correct structure"
+
+# 4. Удалить старый репозиторий на GitHub (через сайт)
+# Settings → Danger Zone → Delete repository
+
+# 5. Создать новый репозиторий на GitHub с тем же именем
+
+# 6. Отправить правильную структуру
+git remote add origin https://github.com/Alex-top/bot_reminder.git
+git branch -M main
+git push -u origin main
