@@ -1,5 +1,6 @@
 """Обработчик команд (/list, /cancel, /cancel_all)"""
 
+from handlers.keyboards import BotKeyboards
 from services.reminder_service import reminder_service
 from utils.formatters import format_reminder_list
 
@@ -18,25 +19,25 @@ class CommandHandler:
         command_text = command_text.lower().strip()
         
         if command_text == "/start" or command_text == "/help":
-            return self._get_help()
+            return self._get_help(), BotKeyboards.get_main_keyboard()
         
         elif command_text == "/list":
-            return self._list_reminders(user_id)
+            return self._list_reminders(user_id), BotKeyboards.get_main_keyboard()
         
         elif command_text.startswith("/cancel "):
             # /cancel 5
             parts = command_text.split()
             if len(parts) == 2 and parts[1].isdigit():
                 reminder_id = int(parts[1])
-                return self._cancel_reminder(user_id, reminder_id)
+                return self._cancel_reminder(user_id, reminder_id), None
             else:
-                return "❌ Использование: `/cancel номер`\nНомер можно посмотреть в `/list`"
+                return "❌ Использование: `/cancel номер`\nНомер можно посмотреть в `/list`", None
         
         elif command_text == "/cancel_all":
-            return self._cancel_all_reminders(user_id)
+            return self._cancel_all_reminders(user_id), BotKeyboards.get_inline_confirm_keyboard()
         
         else:
-            return f"❌ Неизвестная команда: `{command_text}`\nВведите `/help` для списка команд"
+            return f"❌ Неизвестная команда: `{command_text}`\nВведите `/help` для списка команд", None
     
     def _get_help(self) -> str:
         return """🤖 *Бот-напоминание*
@@ -54,6 +55,8 @@ class CommandHandler:
 `/help` — эта справка
 
 💡 *Пример:* `/cancel 3` — отменит напоминание под номером 3
+
+💡 *Используйте кнопки для быстрого управления!*
 """
     
     def _list_reminders(self, user_id: int) -> str:

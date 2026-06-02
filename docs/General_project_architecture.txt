@@ -41,7 +41,8 @@ reminder-bot/
 │   ├── __init__.py
 │   ├── message_handler.py        # обработка текстовых сообщений
 │   ├── command_handler.py        # обработка команд (/start, /help, /list, /cancel)
-│   └── callback_handler.py       # обработка callback-кнопок (если будут)
+│   ├── callback_handler.py       # обработка callback-кнопок
+    └── keyboards.py              # НОВЫЙ: создание клавиатур
 │
 ├── services/
 │   ├── __init__.py
