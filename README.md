@@ -14,3 +14,5 @@
 1. Установить зависимости: `pip install -r requirements.txt`
 2. Настроить `.env` с токеном VK
 3. Запустить: `python bot.py`
+
+📚 [Смотреть все проекты в портфолио](https://github.com/ваш-аккаунт/portfolio)
